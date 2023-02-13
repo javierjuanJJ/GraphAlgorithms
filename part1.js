@@ -5,6 +5,17 @@ const depthFirstPrint = (graph, source) => {
     }
 }
 
+const breadhtFirstPrint = (graph, source) => {
+  const gueue = [ source ];
+  while (gueue.length > 0){
+      const current = gueue.shift();
+      console.log(current);
+      for (let graphElement of graph[current]) {
+          gueue.push(graphElement);
+      }
+  }
+}
+
 
 const graph = {
     a:['b','c'],
@@ -15,4 +26,4 @@ const graph = {
     f:[],
 };
 
-depthFirstPrint(graph, 'a');
+breadhtFirstPrint(graph, 'a');
