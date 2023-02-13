@@ -1,13 +1,8 @@
 const depthFirstPrint = (graph, source) => {
-  const stack = [ source ];
-  while (stack.length > 0){
-      const current = stack.pop();
-      console.log(current);
-
-      for (let graphElement of graph[current]) {
-          stack.push(graphElement);
-      }
-  }
+    console.log(source);
+    for (let graphElement of graph[source]) {
+        depthFirstPrint(graph, graphElement);
+    }
 }
 
 
