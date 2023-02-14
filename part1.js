@@ -16,6 +16,19 @@ const breadhtFirstPrint = (graph, source) => {
   }
 }
 
+const hasPath = (graph, src, dst) => {
+  if (src === dst){
+      return true;
+  }
+
+    for (let neighbor of graph[src]) {
+        if (hasPath(graph, src, dst) === true){
+            return true;
+        }
+    }
+    return false;
+}
+
 
 const graph = {
     a:['b','c'],
@@ -27,3 +40,4 @@ const graph = {
 };
 
 breadhtFirstPrint(graph, 'a');
+console.log(hasPath(graph, 'a', 'e'));
