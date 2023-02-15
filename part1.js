@@ -16,15 +16,21 @@ const breadhtFirstPrint = (graph, source) => {
   }
 }
 
-const hasPath = (graph, src, dst) => {
-  const queue = [ src ];
-    while (queue.length > 0){
-        const current = queue.shift();
-        if (current === dst){
+const hasPath = (graph, src, dst, visited) => {
+
+    if (src === dst){
+        return true;
+    }
+
+    if (visited.has(src)){
+        return false;
+    }
+
+    visited.add(src);
+
+    for (let neighbor of graph[src]) {
+        if (hasPath(graph, neighbor, dst, visited)){
             return true;
-        }
-        for (let neighbor of graph[current]) {
-            queue.push(neighbor);
         }
     }
     return false;
@@ -41,7 +47,7 @@ const graph = {
 };
 
 breadhtFirstPrint(graph, 'a');
-console.log(hasPath(graph, 'a', 'e'));
+console.log(hasPath(graph, 'a', 'e', new Set()));
 
 
 const edges = [
@@ -72,6 +78,6 @@ const buildGraph = (edges) => {
 
 const unDirectPath = (edges, nodeA, nodeB) => {
   const graph = buildGraph(edges);
-  return hasPath(graph, nodeA, nodeB);
+  return hasPath(graph, nodeA, nodeB, new Set());
 }
 unDirectPath(edges,'j','m');
