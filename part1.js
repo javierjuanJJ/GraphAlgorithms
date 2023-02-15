@@ -81,3 +81,111 @@ const unDirectPath = (edges, nodeA, nodeB) => {
   return hasPath(graph, nodeA, nodeB, new Set());
 }
 unDirectPath(edges,'j','m');
+
+
+const connectedComponentsCount = (graph) => {
+    const visited = new Set();
+    let count = 0;
+    for (let node in graph) {
+        if (explore(graph, node, visited) === true) {
+            count += 1;
+        }
+    }
+    return count;
+};
+
+
+const explore = (graph, current, visited) => {
+    if (visited.has(String(current))) return false;
+
+    visited.add(String(current));
+
+    for (let neighbor of graph[current]) {
+        explore(graph, neighbor, visited);
+    }
+
+    return true;
+};
+
+graph2 = {
+    0: [4,7],
+    1: [],
+    2: [],
+    3: [6],
+    4: [0],
+    6: [3],
+    7: [0],
+    8: []
+}
+console.log(graph2);
+connectedComponentsCount(graph2); // -> 5
+console.log(connectedComponentsCount(graph2));
+
+const largestComponent = (graph) => {
+    const visited = new Set();
+    let largest = 0;
+
+    for (let node in graph) {
+        const size = exploreSize(graph, node, visited);
+        if (size > largest) largest = size;
+    }
+
+    return largest;
+};
+
+const exploreSize = (graph, node, visited) => {
+    if (visited.has(node)) return 0;
+
+    visited.add(node);
+
+    let size = 1;
+    for (let neighbor of graph[node]) {
+        size += exploreSize(graph, neighbor, visited);
+    }
+
+    return size;
+};
+
+const shortestPath = (edges, nodeA, nodeB) => {
+    const graph = buildGraph(edges);
+    const visited = new Set([ nodeA ]);
+    const queue = [[ nodeA, 0 ]];
+
+    while (queue.length > 0) {
+        const [ node, distance ] = queue.shift();
+
+        if (node === nodeB) return distance;
+
+        for (let neighbor of graph[node]) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push([ neighbor, distance + 1 ]);
+            }
+        }
+    }
+
+    return -1;
+};
+
+console.log(largestComponent({
+    0: ['4', '7'],
+    1: [],
+    2: [],
+    3: ['6'],
+    4: ['0'],
+    6: ['3'],
+    7: ['0'],
+    8: []
+})); // -> 3
+
+const edges2 = [
+    ['m', 'n'],
+    ['n', 'o'],
+    ['o', 'p'],
+    ['p', 'q'],
+    ['t', 'o'],
+    ['r', 'q'],
+    ['r', 's']
+];
+
+console.log(shortestPath(edges2, 'm', 's')); // -> 6
